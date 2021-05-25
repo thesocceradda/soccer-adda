@@ -35,8 +35,8 @@
         <dt><span>Tag</span></dt>
         <dd>
           <span *ngFor="let tag of post.tags; let last = last">
-            <a [routerLink]="['/tag', tag?.id, 'view']">{{ tag.name }}</a
-            >{{ last ? '' : ', ' }}
+            {{ tag.name }}
+            {{ last ? '' : ', ' }}
           </span>
         </dd>
       </dl>
