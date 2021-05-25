@@ -1,8 +1,8 @@
 <nav data-cy="navbar" class="navbar navbar-dark navbar-expand-md bg-primary">
   <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
     <span class="logo-img"></span>
-    <span class="navbar-title">Socceradda</span>
-    <span class="navbar-version">{{ version }}</span>
+    <span class="navbar-title">The Soccer Adda</span>
+    <!-- <span class="navbar-version">{{ version }}</span> -->
   </a>
   <a
     class="navbar-toggler d-lg-none"
@@ -27,8 +27,23 @@
         </a>
       </li>
       <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
+      <li class="nav-item"
+          *ngSwitchCase="true"
+          ngbDropdown
+          class="nav-item dropdown pointer"
+          display="dynamic"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" routerLink="post" (click)="collapseNavbar()">
+          <span>
+            <fa-icon icon="asterisk"></fa-icon>
+            <span>Posts</span>
+          </span>
+        </a>
+      </li>
+
       <li
-        *ngSwitchCase="true"
+        *jhiHasAnyAuthority="'ROLE_ADMIN'"
         ngbDropdown
         class="nav-item dropdown pointer"
         display="dynamic"
@@ -54,7 +69,7 @@
               <span>Blog</span>
             </a>
           </li>
-          <li>
+          <!-- <li>
             <a
               class="dropdown-item"
               routerLink="post"
@@ -65,7 +80,7 @@
               <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
               <span>Post</span>
             </a>
-          </li>
+          </li> -->
           <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
             <a
               class="dropdown-item"
