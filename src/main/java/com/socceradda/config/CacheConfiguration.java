@@ -50,6 +50,11 @@ public class CacheConfiguration {
             createCache(cm, com.socceradda.domain.User.class.getName() + ".authorities");
             createCache(cm, com.socceradda.domain.PersistentToken.class.getName());
             createCache(cm, com.socceradda.domain.User.class.getName() + ".persistentTokens");
+            createCache(cm, com.socceradda.domain.Blog.class.getName());
+            createCache(cm, com.socceradda.domain.Post.class.getName());
+            createCache(cm, com.socceradda.domain.Post.class.getName() + ".tags");
+            createCache(cm, com.socceradda.domain.Tag.class.getName());
+            createCache(cm, com.socceradda.domain.Tag.class.getName() + ".blogs");
             // jhipster-needle-ehcache-add-entry
         };
     }

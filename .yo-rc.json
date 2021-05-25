@@ -41,6 +41,8 @@
     "packageFolder": "com/socceradda",
     "rememberMeKey": "74915d2eb5afdca9487ffea13a8f6e3de7b811202c9666b35ff348c38477effa8707ad269036510320eefc1b22c2b9c488b5",
     "clientPackageManager": "npm",
-    "languages": ["en", "fr"]
+    "languages": ["en", "fr"],
+    "entities": ["Blog", "Post", "Tag"],
+    "lastLiquibaseTimestamp": 1621920206000
   }
 }
