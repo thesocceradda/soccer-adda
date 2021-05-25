@@ -24,6 +24,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
+import com.socceradda.service.UserService;
+import com.socceradda.repository.BlogRepository;
+import com.socceradda.domain.Blog;
 
 /**
  * REST controller for managing {@link com.socceradda.domain.Post}.
@@ -42,8 +45,14 @@ public class PostResource {
 
     private final PostRepository postRepository;
 
-    public PostResource(PostRepository postRepository) {
+    private UserService userService;
+
+    private final BlogRepository blogRepository;
+
+    public PostResource(PostRepository postRepository, UserService userService, BlogRepository blogRepository) {
         this.postRepository = postRepository;
+        this.userService = userService;
+        this.blogRepository = blogRepository;
     }
 
     /**
@@ -59,6 +68,8 @@ public class PostResource {
         if (post.getId() != null) {
             throw new BadRequestAlertException("A new post cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        Blog blog = blogRepository.findByHandle(userService.getUserWithAuthorities().get().getLogin());
+        post.setBlog(blog);
         Post result = postRepository.save(post);
         return ResponseEntity
             .created(new URI("/api/posts/" + result.getId()))
@@ -90,7 +101,8 @@ public class PostResource {
         if (!postRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-
+        Blog blog = blogRepository.findByHandle(userService.getUserWithAuthorities().get().getLogin());
+        post.setBlog(blog);
         Post result = postRepository.save(post);
         return ResponseEntity
             .ok()

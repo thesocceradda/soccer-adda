@@ -11,6 +11,8 @@ import { DataUtils } from 'app/core/util/data-util.service';
 import { ParseLinks } from 'app/core/util/parse-links.service';
 import { BlogService } from '../../blog/service/blog.service';
 import { IBlog } from '../../blog/blog.model';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/auth/account.model';
 
 @Component({
   selector: 'jhi-post',
@@ -25,13 +27,15 @@ export class PostComponent implements OnInit {
   page: number;
   predicate: string;
   ascending: boolean;
+  account: Account | null = null;
 
   constructor(
     protected postService: PostService,
     protected dataUtils: DataUtils,
     protected modalService: NgbModal,
     protected parseLinks: ParseLinks,
-    public blogService: BlogService
+    public blogService: BlogService,
+    private accountService: AccountService
   ) {
     this.posts = [];
     this.initialPosts = [];
@@ -67,6 +71,7 @@ export class PostComponent implements OnInit {
   reset(): void {
     this.page = 0;
     this.posts = [];
+    this.initialPosts = [];
     this.loadAll();
   }
 
@@ -111,6 +116,9 @@ export class PostComponent implements OnInit {
   }
 
   protected paginatePosts(data: IPost[] | null, headers: HttpHeaders): void {
+    this.accountService.identity().subscribe(account => {
+      this.account = account;
+    });
     this.links = this.parseLinks.parse(headers.get('link') ?? '');
     if (data) {
       for (const d of data) {

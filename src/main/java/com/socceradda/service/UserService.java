@@ -25,6 +25,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.jhipster.security.RandomUtil;
+import com.socceradda.repository.BlogRepository;
+import com.socceradda.domain.Blog;
 
 /**
  * Service class for managing users.
@@ -45,18 +47,22 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
+    private final BlogRepository blogRepository;
+
     public UserService(
         UserRepository userRepository,
         PasswordEncoder passwordEncoder,
         PersistentTokenRepository persistentTokenRepository,
         AuthorityRepository authorityRepository,
-        CacheManager cacheManager
+        CacheManager cacheManager,
+        BlogRepository blogRepository
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.persistentTokenRepository = persistentTokenRepository;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.blogRepository = blogRepository;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -70,6 +76,11 @@ public class UserService {
                     user.setActivationKey(null);
                     this.clearUserCaches(user);
                     log.debug("Activated user: {}", user);
+                    Blog blog = new Blog();
+                    blog.setHandle(user.getLogin());
+                    blog.setName("User''s Blog");
+                    blog.setUser(user);
+                    blogRepository.save(blog);
                     return user;
                 }
             );

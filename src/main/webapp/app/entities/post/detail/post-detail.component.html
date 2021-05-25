@@ -26,12 +26,12 @@
         <dd>
           <span>{{ post.date | formatMediumDatetime }}</span>
         </dd>
-        <dt><span>Blog</span></dt>
+        <!-- <dt><span>Blog</span></dt>
         <dd>
           <div *ngIf="post.blog">
             <a [routerLink]="['/blog', post.blog?.id, 'view']">{{ post.blog?.name }}</a>
           </div>
-        </dd>
+        </dd> -->
         <dt><span>Tag</span></dt>
         <dd>
           <span *ngFor="let tag of post.tags; let last = last">
