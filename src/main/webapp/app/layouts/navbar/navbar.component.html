@@ -1,7 +1,7 @@
 <nav data-cy="navbar" class="navbar navbar-dark navbar-expand-md bg-primary">
   <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
     <span class="logo-img"></span>
-    <span class="navbar-title">The Soccer Adda</span>
+    <span class="navbar-title"><b>The Soccer Adda</b></span>
     <!-- <span class="navbar-version">{{ version }}</span> -->
   </a>
   <a
@@ -28,7 +28,6 @@
       </li>
       <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
       <li class="nav-item"
-          *ngSwitchCase="true"
           ngbDropdown
           class="nav-item dropdown pointer"
           display="dynamic"

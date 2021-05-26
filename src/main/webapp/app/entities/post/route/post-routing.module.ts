@@ -11,7 +11,6 @@ const postRoute: Routes = [
   {
     path: '',
     component: PostComponent,
-    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',

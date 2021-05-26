@@ -21,7 +21,7 @@ module.exports = (config, options, targetOptions) => {
       new FriendlyErrorsWebpackPlugin(),
       new WebpackNotifierPlugin({
         title: 'Socceradda',
-        contentImage: path.join(__dirname, 'logo-jhipster.png'),
+        contentImage: path.join(__dirname, 'logo-brand.png'),
       })
     );
     if (!process.env.JHI_DISABLE_WEBPACK_LOGS) {
