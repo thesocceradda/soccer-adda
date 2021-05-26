@@ -9,6 +9,8 @@ export interface IPost {
   date?: dayjs.Dayjs;
   blog?: IBlog | null;
   tags?: ITag[] | null;
+  owner?: string;
+  auth?: boolean;
 }
 
 export class Post implements IPost {
@@ -18,7 +20,9 @@ export class Post implements IPost {
     public content?: string,
     public date?: dayjs.Dayjs,
     public blog?: IBlog | null,
-    public tags?: ITag[] | null
+    public tags?: ITag[] | null,
+    public owner?: string,
+    public auth?:boolean
   ) {}
 }
 

@@ -36,6 +36,10 @@ public class Post implements Serializable {
     @Column(name = "date", nullable = false)
     private Instant date;
 
+    @NotNull
+    @Column(name = "owner", nullable = false)
+    private String owner;
+
     @ManyToOne
     @JsonIgnoreProperties(value = { "user" }, allowSetters = true)
     private Blog blog;
@@ -135,6 +139,14 @@ public class Post implements Serializable {
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+
+    public String getOwner() {
+        return this.owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

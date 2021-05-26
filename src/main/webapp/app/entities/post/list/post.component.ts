@@ -122,18 +122,13 @@ export class PostComponent implements OnInit {
     this.links = this.parseLinks.parse(headers.get('link') ?? '');
     if (data) {
       for (const d of data) {
-        this.initialPosts.push(d);
-      }
-    }
-    if(this.initialPosts.length > 0 ){
-      for(const post of this.initialPosts){
-        this.blogService.find(post.blog!.id!).subscribe(
-          (res: HttpResponse<IBlog>) => {
-            const blog = res.body ?? null;
-            post.blog!.user = blog!.user;
-            this.posts.push(post);
-          }
-        );
+        if(d.owner === this.account?.login || this.account?.login === 'admin'){
+          d.auth = true;
+        }
+        else{
+          d.auth = false;
+        }
+        this.posts.push(d);
       }
     }
   }

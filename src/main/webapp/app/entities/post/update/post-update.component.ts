@@ -17,6 +17,8 @@ import { IBlog } from 'app/entities/blog/blog.model';
 import { BlogService } from 'app/entities/blog/service/blog.service';
 import { ITag } from 'app/entities/tag/tag.model';
 import { TagService } from 'app/entities/tag/service/tag.service';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/auth/account.model';
 
 @Component({
   selector: 'jhi-post-update',
@@ -27,6 +29,7 @@ export class PostUpdateComponent implements OnInit {
 
   blogsSharedCollection: IBlog[] = [];
   tagsSharedCollection: ITag[] = [];
+  account: Account | null = null;
 
   editForm = this.fb.group({
     id: [],
@@ -44,7 +47,8 @@ export class PostUpdateComponent implements OnInit {
     protected blogService: BlogService,
     protected tagService: TagService,
     protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder
+    protected fb: FormBuilder,
+    private accountService: AccountService
   ) {}
 
   ngOnInit(): void {
@@ -158,6 +162,9 @@ export class PostUpdateComponent implements OnInit {
   }
 
   protected createFromForm(): IPost {
+    this.accountService.identity().subscribe(account => {
+      this.account = account;
+    });
     return {
       ...new Post(),
       id: this.editForm.get(['id'])!.value,
@@ -166,6 +173,7 @@ export class PostUpdateComponent implements OnInit {
       date: this.editForm.get(['date'])!.value ? dayjs(this.editForm.get(['date'])!.value, DATE_TIME_FORMAT) : undefined,
       blog: this.editForm.get(['blog'])!.value,
       tags: this.editForm.get(['tags'])!.value,
+      owner: this.account?.login,
     };
   }
 }
