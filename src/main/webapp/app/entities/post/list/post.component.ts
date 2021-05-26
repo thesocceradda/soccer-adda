@@ -10,7 +10,6 @@ import { PostDeleteDialogComponent } from '../delete/post-delete-dialog.componen
 import { DataUtils } from 'app/core/util/data-util.service';
 import { ParseLinks } from 'app/core/util/parse-links.service';
 import { BlogService } from '../../blog/service/blog.service';
-import { IBlog } from '../../blog/blog.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
 
