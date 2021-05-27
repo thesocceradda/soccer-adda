@@ -170,7 +170,7 @@ export class PostUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       title: this.editForm.get(['title'])!.value,
       content: this.editForm.get(['content'])!.value,
-      date: this.editForm.get(['date'])!.value ? dayjs(this.editForm.get(['date'])!.value, DATE_TIME_FORMAT) : undefined,
+      date: dayjs(),
       blog: this.editForm.get(['blog'])!.value,
       tags: this.editForm.get(['tags'])!.value,
       owner: this.account?.login,
