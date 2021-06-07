@@ -121,13 +121,14 @@ export class PostComponent implements OnInit {
     this.links = this.parseLinks.parse(headers.get('link') ?? '');
     if (data) {
       for (const d of data) {
-        if(d.owner === this.account?.login || this.account?.login === 'admin'){
+        if(d.owner === this.account?.login || this.account?.authorities.includes('ROLE_ADMIN')){
           d.auth = true;
         }
         else{
           d.auth = false;
         }
         this.posts.push(d);
+        this.posts.sort(function(a,b){return b.id! - a.id!});
       }
     }
   }

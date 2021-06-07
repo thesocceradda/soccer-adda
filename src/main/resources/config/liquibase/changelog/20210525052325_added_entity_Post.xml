@@ -67,6 +67,7 @@
             <column name="title" type="string"/>
             <column name="content" type="clob"/>
             <column name="date" type="${datetimeType}"/>
+            <column name="owner" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

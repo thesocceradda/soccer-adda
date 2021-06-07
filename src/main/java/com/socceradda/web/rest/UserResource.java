@@ -197,4 +197,13 @@ public class UserResource {
             .headers(HeaderUtil.createAlert(applicationName, "A user is deleted with identifier " + login, login))
             .build();
     }
+
+    @GetMapping("/userCount")
+    public ResponseEntity<Integer> getUserCount() {
+        log.debug("REST request to get all User count");
+        System.out.println("Inside userCount Method");
+        final Integer count = userRepository.getUserCount();
+        System.out.println("Int Value = "+count);
+        return new ResponseEntity<>(count, HttpStatus.OK);
+    }
 }

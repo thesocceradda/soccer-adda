@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { HttpClient} from '@angular/common/http';
+import { ApplicationConfigService } from 'app/core/config/application-config.service';
 
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
@@ -13,11 +15,16 @@ import { Account } from 'app/core/auth/account.model';
 export class HomeComponent implements OnInit, OnDestroy {
   account: Account | null = null;
   authSubscription?: Subscription;
-
-  constructor(private accountService: AccountService, private router: Router) {}
+  public resourceUrl = this.applicationConfigService.getEndpointFor('api/admin/userCount');
+  userCount : any;
+  constructor(private accountService: AccountService, private router: Router, private http: HttpClient,private applicationConfigService: ApplicationConfigService) {}
 
   ngOnInit(): void {
     this.authSubscription = this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
+    this.http.get<BigInteger>(this.resourceUrl).subscribe(userCount => {
+      this.userCount = userCount;
+    });
+    
   }
 
   isAuthenticated(): boolean {
