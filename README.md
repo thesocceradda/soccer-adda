@@ -220,6 +220,12 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 
 ## Deploying to AWS using Boxfuse
  1. create a deployable package by executing below command
+    ```
     mvnw package -Pprod -DskipTests
+    
+    ```
  2. Deploy it to AWS using boxfuse using below command
+    ```
     boxfuse run -env=prod
+    
+    ```
