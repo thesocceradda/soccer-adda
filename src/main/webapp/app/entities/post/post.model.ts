@@ -11,6 +11,8 @@ export interface IPost {
   tags?: ITag[] | null;
   owner?: string;
   auth?: boolean;
+  image?:any;
+  imageData?:string;
 }
 
 export class Post implements IPost {
@@ -22,7 +24,9 @@ export class Post implements IPost {
     public blog?: IBlog | null,
     public tags?: ITag[] | null,
     public owner?: string,
-    public auth?:boolean
+    public auth?:boolean,
+    public image?:any,
+    public imageData?:string
   ) {}
 }
 

@@ -31,6 +31,12 @@ export class PostUpdateComponent implements OnInit {
   tagsSharedCollection: ITag[] = [];
   account: Account | null = null;
 
+  imgURL: any;
+  receivedImageData: any;
+  base64Data: any;
+  convertedImage: any;
+  selectedFile:any;
+
   editForm = this.fb.group({
     id: [],
     title: [null, [Validators.required]],
@@ -114,6 +120,25 @@ export class PostUpdateComponent implements OnInit {
     return option;
   }
 
+onFileChanged(event:any) : void {
+  if(event.target.files[0].type.includes("jpeg") || event.target.files[0].type.includes("png") || event.target.files[0].type.includes("jpg")){
+      this.selectedFile = event.target.files[0];
+      // Below part is used to display the selected image
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onload = () => {
+        this.imgURL = reader.result;
+        };
+  }else{
+    alert("Please select valid Image. Supported extn are .PNG, .JPG, .JPEG");
+  }
+ }
+
+ removeImage():void{
+  this.imgURL = null;
+  this.selectedFile = null;
+ }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IPost>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       () => this.onSaveSuccess(),
@@ -165,6 +190,11 @@ export class PostUpdateComponent implements OnInit {
     this.accountService.identity().subscribe(account => {
       this.account = account;
     });
+    const imageData = {
+      base64: this.imgURL.split (",").pop (),
+      name: this.selectedFile.name,
+      type: this.selectedFile.type
+    };
     return {
       ...new Post(),
       id: this.editForm.get(['id'])!.value,
@@ -174,6 +204,7 @@ export class PostUpdateComponent implements OnInit {
       blog: this.editForm.get(['blog'])!.value,
       tags: this.editForm.get(['tags'])!.value,
       owner: this.account?.login,
+      image: imageData
     };
   }
 }

@@ -19,12 +19,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 import com.socceradda.service.UserService;
+import com.socceradda.service.dto.PostDTO;
 import com.socceradda.repository.BlogRepository;
 import com.socceradda.domain.Blog;
 
@@ -63,13 +65,27 @@ public class PostResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/posts")
-    public ResponseEntity<Post> createPost(@Valid @RequestBody Post post) throws URISyntaxException {
-        log.debug("REST request to save Post : {}", post);
-        if (post.getId() != null) {
-            throw new BadRequestAlertException("A new post cannot already have an ID", ENTITY_NAME, "idexists");
-        }
+    public ResponseEntity<Post> createPost(@Valid @RequestBody PostDTO postDTO) throws URISyntaxException {
+        log.debug("REST request to save Post : {}", postDTO);
+		/*
+		 * if (post.getId() != null) { throw new
+		 * BadRequestAlertException("A new post cannot already have an ID", ENTITY_NAME,
+		 * "idexists"); }
+		 */
+        System.out.println("File name" + postDTO.getImage().getName());
+        System.out.println("File name" + postDTO.getImage().getType());
+        System.out.println("File name" + postDTO.getImage().getBase64());
         Blog blog = blogRepository.findByHandle(userService.getUserWithAuthorities().get().getLogin());
-        post.setBlog(blog);
+        postDTO.setBlog(blog);
+        Post post = new Post();
+        post.setTitle(postDTO.getTitle());
+        post.setTags(postDTO.getTags());
+        post.setOwner(postDTO.getOwner());
+        post.setDate(postDTO.getDate());
+        post.setContent(postDTO.getContent());
+        post.setBlog(postDTO.getBlog());
+        post.setImageName(postDTO.getImage().getName());
+        post.setImageData(Base64Utils.decodeFromString(postDTO.getImage().getBase64()));
         Post result = postRepository.save(post);
         return ResponseEntity
             .created(new URI("/api/posts/" + result.getId()))

@@ -39,8 +39,30 @@ public class Post implements Serializable {
     @NotNull
     @Column(name = "owner", nullable = false)
     private String owner;
+    
+    @Column(name = "image_data", length=2000)
+    private byte[] imageData;
+    
+    @Column(name = "image_name")
+    private String imageName;
 
-    @ManyToOne
+    public byte[] getImageData() {
+		return imageData;
+	}
+
+	public void setImageData(byte[] imageData) {
+		this.imageData = imageData;
+	}
+
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
+
+	@ManyToOne
     @JsonIgnoreProperties(value = { "user" }, allowSetters = true)
     private Blog blog;
 
@@ -148,6 +170,7 @@ public class Post implements Serializable {
     public void setOwner(String owner) {
         this.owner = owner;
     }
+    
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

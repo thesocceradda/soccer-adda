@@ -12,6 +12,7 @@ import { ParseLinks } from 'app/core/util/parse-links.service';
 import { BlogService } from '../../blog/service/blog.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'jhi-post',
@@ -34,7 +35,8 @@ export class PostComponent implements OnInit {
     protected modalService: NgbModal,
     protected parseLinks: ParseLinks,
     public blogService: BlogService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    public domSanitizer: DomSanitizer
   ) {
     this.posts = [];
     this.initialPosts = [];
@@ -127,6 +129,7 @@ export class PostComponent implements OnInit {
         else{
           d.auth = false;
         }
+        d.imageData = this.domSanitizer.bypassSecurityTrustUrl("data:image/jpeg;base64, " + d.imageData!) as string;
         this.posts.push(d);
         this.posts.sort(function(a,b){return b.id! - a.id!});
       }
