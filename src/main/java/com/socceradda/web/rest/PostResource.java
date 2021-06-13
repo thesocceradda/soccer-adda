@@ -19,12 +19,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 import com.socceradda.service.UserService;
+import com.socceradda.service.dto.PostDTO;
 import com.socceradda.repository.BlogRepository;
 import com.socceradda.domain.Blog;
 
@@ -63,13 +65,24 @@ public class PostResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/posts")
-    public ResponseEntity<Post> createPost(@Valid @RequestBody Post post) throws URISyntaxException {
-        log.debug("REST request to save Post : {}", post);
-        if (post.getId() != null) {
-            throw new BadRequestAlertException("A new post cannot already have an ID", ENTITY_NAME, "idexists");
-        }
+    public ResponseEntity<Post> createPost(@Valid @RequestBody PostDTO postDTO) throws URISyntaxException {
+        log.debug("REST request to save Post : {}", postDTO);
+		/*
+		 * if (post.getId() != null) { throw new
+		 * BadRequestAlertException("A new post cannot already have an ID", ENTITY_NAME,
+		 * "idexists"); }
+		 */
         Blog blog = blogRepository.findByHandle(userService.getUserWithAuthorities().get().getLogin());
-        post.setBlog(blog);
+        postDTO.setBlog(blog);
+        Post post = new Post();
+        post.setTitle(postDTO.getTitle());
+        post.setTags(postDTO.getTags());
+        post.setOwner(postDTO.getOwner());
+        post.setDate(postDTO.getDate());
+        post.setContent(postDTO.getContent());
+        post.setBlog(postDTO.getBlog());
+        post.setImageName(postDTO.getImage().getName());
+        post.setImageData(Base64Utils.decodeFromString(postDTO.getImage().getBase64()));
         Post result = postRepository.save(post);
         return ResponseEntity
             .created(new URI("/api/posts/" + result.getId()))
@@ -88,13 +101,13 @@ public class PostResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/posts/{id}")
-    public ResponseEntity<Post> updatePost(@PathVariable(value = "id", required = false) final Long id, @Valid @RequestBody Post post)
+    public ResponseEntity<Post> updatePost(@PathVariable(value = "id", required = false) final Long id, @Valid @RequestBody PostDTO postDTO)
         throws URISyntaxException {
-        log.debug("REST request to update Post : {}, {}", id, post);
-        if (post.getId() == null) {
+        log.debug("REST request to update Post : {}, {}", id, postDTO);
+        if (postDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, post.getId())) {
+        if (!Objects.equals(id, postDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -102,7 +115,17 @@ public class PostResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
         Blog blog = blogRepository.findByHandle(userService.getUserWithAuthorities().get().getLogin());
-        post.setBlog(blog);
+        postDTO.setBlog(blog);
+        Post post = new Post();
+        post.setId(postDTO.getId());
+        post.setTitle(postDTO.getTitle());
+        post.setTags(postDTO.getTags());
+        post.setOwner(postDTO.getOwner());
+        post.setDate(postDTO.getDate());
+        post.setContent(postDTO.getContent());
+        post.setBlog(postDTO.getBlog());
+        post.setImageName(postDTO.getImage().getName());
+        post.setImageData(Base64Utils.decodeFromString(postDTO.getImage().getBase64()));
         Post result = postRepository.save(post);
         return ResponseEntity
             .ok()

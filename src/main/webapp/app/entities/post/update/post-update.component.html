@@ -20,6 +20,20 @@
         </div>
 
         <div class="form-group">
+          <label class="form-control-label" for="field_image">Image</label>
+          <div>
+            <button type="button" id="chooseFile" class="btn btn-primary" (click)="fileInput.click()">
+              <fa-icon icon="save"></fa-icon>&nbsp;<span>Choose file</span>
+            </button>
+            <input accept=".png, .jpg" style="display: none" type="file" (change)="onFileChanged($event)" class="form-control" #fileInput>
+            <img [src]="imgURL" height="200" *ngIf="imgURL"/>
+            <button type="button" id="remove" class="btn btn-secondary" (click)="removeImage()" *ngIf="imgURL">
+              <fa-icon icon="ban"></fa-icon>&nbsp;<span>Remove</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
           <label class="form-control-label" for="field_content">Content</label>
           <textarea class="form-control" name="content" id="field_content" data-cy="content" formControlName="content"></textarea>
           <div *ngIf="editForm.get('content')!.invalid && (editForm.get('content')!.dirty || editForm.get('content')!.touched)">

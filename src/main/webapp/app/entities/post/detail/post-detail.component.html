@@ -18,6 +18,11 @@
         <dd>
           <span>{{ post.title }}</span>
         </dd>
+        <dt><span>Image</span></dt>
+        <dd>
+          <img [src]="post.imageData" height="200" *ngIf="isImage"/>
+          <span *ngIf="!isImage">No Image</span>
+        </dd>
         <dt><span>Content</span></dt>
         <dd>
           <span>{{ post.content }}</span>
