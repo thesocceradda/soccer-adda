@@ -210,7 +210,7 @@ onFileChanged(event:any) : void {
       name: "",
       type: ""
     };
-    if(!(this.imgURL === null)){
+    if(this.imgURL){
       imageData = {
         base64: this.isUpdate ? this.imgURL.toString().split (",").pop ().trim().split(" ")[0]: this.imgURL.toString().split (",").pop (),
         name: "postImage.jpg",

@@ -129,7 +129,7 @@ export class PostComponent implements OnInit {
         else{
           d.auth = false;
         }
-        if(!(d.imageData === "")){
+        if(d.imageData as string){
           d.imageData = this.domSanitizer.bypassSecurityTrustUrl("data:image/jpeg;base64, " + d.imageData!) as string;
         }else{
           d.imageData = "";

@@ -18,7 +18,7 @@ export class PostDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ post }) => {
-      if(!(post.imageData === "")){
+      if(post.imageData){
         this.isImage = true;
         post.imageData = this.domSanitizer.bypassSecurityTrustUrl("data:image/jpeg;base64, " + (post.imageData! as string)) as string;
       }else{

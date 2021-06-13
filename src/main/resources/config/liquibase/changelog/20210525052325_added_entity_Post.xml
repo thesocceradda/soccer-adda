@@ -29,12 +29,6 @@
             <column name="owner" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="image_name" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="image_data" type="MEDIUMBLOB">
-                <constraints nullable="true" />
-            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="post" columnName="date" columnDataType="${datetimeType}"/>
@@ -74,8 +68,6 @@
             <column name="content" type="clob"/>
             <column name="date" type="${datetimeType}"/>
             <column name="owner" type="string"/>
-            <column name="image_name" type="string"/>
-            <column name="image_data" type="MEDIUMBLOB"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
