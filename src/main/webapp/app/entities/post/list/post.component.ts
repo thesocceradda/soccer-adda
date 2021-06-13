@@ -129,7 +129,11 @@ export class PostComponent implements OnInit {
         else{
           d.auth = false;
         }
-        d.imageData = this.domSanitizer.bypassSecurityTrustUrl("data:image/jpeg;base64, " + d.imageData!) as string;
+        if(!(d.imageData === "")){
+          d.imageData = this.domSanitizer.bypassSecurityTrustUrl("data:image/jpeg;base64, " + d.imageData!) as string;
+        }else{
+          d.imageData = "";
+        }
         this.posts.push(d);
         this.posts.sort(function(a,b){return b.id! - a.id!});
       }

@@ -19,6 +19,7 @@ import { ITag } from 'app/entities/tag/tag.model';
 import { TagService } from 'app/entities/tag/service/tag.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'jhi-post-update',
@@ -36,6 +37,7 @@ export class PostUpdateComponent implements OnInit {
   base64Data: any;
   convertedImage: any;
   selectedFile:any;
+  isUpdate = false;
 
   editForm = this.fb.group({
     id: [],
@@ -54,7 +56,8 @@ export class PostUpdateComponent implements OnInit {
     protected tagService: TagService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder,
-    private accountService: AccountService
+    private accountService: AccountService,
+    public domSanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -62,6 +65,14 @@ export class PostUpdateComponent implements OnInit {
       if (post.id === undefined) {
         const today = dayjs().startOf('day');
         post.date = today;
+      }else{
+        if(!(post.imageData === "")){
+          this.imgURL = this.domSanitizer.bypassSecurityTrustUrl("data:image/jpeg;base64, " + (post.imageData! as string)) as string;
+        }else{
+          this.imgURL = "";
+        }
+        
+        this.isUpdate = true;
       }
 
       this.updateForm(post);
@@ -122,6 +133,7 @@ export class PostUpdateComponent implements OnInit {
 
 onFileChanged(event:any) : void {
   if(event.target.files[0].type.includes("jpeg") || event.target.files[0].type.includes("png") || event.target.files[0].type.includes("jpg")){
+    if(event.target.files[0].size < 2000000) {
       this.selectedFile = event.target.files[0];
       // Below part is used to display the selected image
       const reader = new FileReader();
@@ -129,6 +141,9 @@ onFileChanged(event:any) : void {
       reader.onload = () => {
         this.imgURL = reader.result;
         };
+    }else{
+      alert("Please upload image of size less than 2MB");
+    }  
   }else{
     alert("Please select valid Image. Supported extn are .PNG, .JPG, .JPEG");
   }
@@ -190,11 +205,19 @@ onFileChanged(event:any) : void {
     this.accountService.identity().subscribe(account => {
       this.account = account;
     });
-    const imageData = {
-      base64: this.imgURL.split (",").pop (),
-      name: this.selectedFile.name,
-      type: this.selectedFile.type
+    let imageData = {
+      base64: "",
+      name: "",
+      type: ""
     };
+    if(!(this.imgURL === null)){
+      imageData = {
+        base64: this.isUpdate ? this.imgURL.toString().split (",").pop ().trim().split(" ")[0]: this.imgURL.toString().split (",").pop (),
+        name: "postImage.jpg",
+        type: "image/jpeg"
+      };
+    }
+    
     return {
       ...new Post(),
       id: this.editForm.get(['id'])!.value,

@@ -82,7 +82,7 @@
             <div>
             <div class="post-preview">
                     <h3 class="post-title">{{ post.title }}</h3>
-                    <img [src]="post.imageData"/>
+                    <img [src]="post.imageData" height="300" *ngIf="post.imageData"/>
                     <p class="post-subtitle" [innerHTML] = "post.content"></p>
                 <p class="post-meta">
                     Posted by
